@@ -25,7 +25,7 @@ let map = L.map('map', {
 
 let current_language = "he"
 let basemaps = {
-'COpenStreetMap Mapnik Style':OpenStreetMap_Mapnik,
+'OpenStreetMap Mapnik Style':OpenStreetMap_Mapnik,
 'Hydda Full': Hydda_Full,
 'Stamen Watercolor': Stamen_Watercolor
 };
@@ -106,6 +106,6 @@ $.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גי
 		}
 		}).addTo(map);
 
-	L.control.layers(basemaps, shops).addTo(map);
+	L.control.layers(basemaps).addTo(map);
 	
 })
