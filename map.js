@@ -58,7 +58,7 @@ fillOpacity: 0.5
 };
 
 sheet_ID = "1ufxJQPU2EAWIE0k2KPAh18hheJiQ3qaUHNurekXEAyo"
-$.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גיליון1!A1:F?key=${API_KEY}`,function(data){
+$.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גיליון1!A1:G?key=${API_KEY}&alt=json`,function(data){
     points_data = data.values
     propertyNames = points_data[0]
     geojson = {
@@ -92,7 +92,10 @@ $.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גי
 		},
 		onEachFeature:function(feature, layer){
 			layer.bindPopup("<span><center><b>"+feature.properties["שם העסק"]+"</b></center></span></br>"+
-			"<span>"+feature.properties["סוג העסק"]+"</span>"
+      "<span>"+feature.properties["סוג העסק"]+"</span><br>"+
+      (feature.properties["מחזור"] ? `<i style="font-size:24px; color:green;" class="fa fa-recycle"></i>` : "") + 
+      (feature.properties["קופסאות רב פעמיות"] ? `<i style="font-size:24px; color:green;" class="fa fa-leaf"></i>`: "")
+      
 			);
 		},
 		style: function style(feature){
