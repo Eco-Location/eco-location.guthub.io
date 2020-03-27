@@ -68,22 +68,26 @@ $.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גי
         ]
       }
     for(i=1;i<points_data.length;i++){
+      if( points_data[i][3] &&  points_data[i][2]){
         feature = {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                points_data[i][3],
-                points_data[i][2]
-              ]
-            }
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              +points_data[i][3],
+              +points_data[i][2]
+            ]
           }
+        }
+      
+        for(j=0;j<points_data[i].length;j++){
+          feature.properties[propertyNames[j]] = points_data[i][j]
+        }
+        geojson.features.push(feature)
+
+      }
         
-          for(j=0;j<points_data[i].length;j++){
-            feature.properties[propertyNames[j]] = points_data[i][j]
-          }
-          geojson.features.push(feature)
     }
 
     shops = L.geoJSON(geojson, {
