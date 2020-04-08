@@ -11,7 +11,7 @@ let Stamen_Watercolor = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/w
 	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 	subdomains: 'abcd',
 	minZoom: 1,
-	maxZoom: 16,
+	maxZoom: 17,
 	ext: 'jpg'
 });
 eval(atob("QVBJX0tFWT0nQUl6YVN5Q3NCajRfTjBpSUt3YWFaSWpXTHZPSjlZRXNlaVV6M3BBJw=="))
@@ -26,7 +26,7 @@ map.getPane('labels').style.pointerEvents = 'none';
 var CartoDB_PositronOnlyLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
   subdomains: 'abcd',
-    maxZoom: 19,
+    maxZoom: 17,
     pane: "labels"
 }).addTo(map)
 
@@ -46,14 +46,22 @@ return parts.join(".");
 
 let shopIcon = L.Icon.extend({
 options: {
-    iconSize:     [50, 50],
+    iconSize:     [25, 25],
     iconAnchor:   [25, 25],
     popupAnchor:  [-3, -5]
 }
 });
 
-let SecondHandIcon = new shopIcon({iconUrl: 'images/SecondHand.png'})
-
+let SecondHandIcon = new shopIcon({iconUrl: 'images/clothes.png'});
+let FoodIcon = new shopIcon({iconUrl: 'images/greengrocer.png'});
+let BookIcon = new shopIcon({iconUrl: 'images/books.png'});
+let GenericShopIcon = new shopIcon({iconUrl: 'images/shop.png'});
+getIcon = function(feature){
+  return feature.properties["סוג העסק"] == "חנות יד שנייה" ? SecondHandIcon :
+          feature.properties["סוג העסק"] == "מזון" ? FoodIcon :
+          feature.properties["סוג העסק"] == "ספרים יד שניה" ? BookIcon :
+          GenericShopIcon
+}
 let points_data;
 let geojson;
 
@@ -99,9 +107,10 @@ $.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גי
 
     shops = L.geoJSON(geojson, {
 		pointToLayer: function (feature, latlng) {
-			return L.marker(latlng,{icon: SecondHandIcon});
+			return L.marker(latlng,{icon: getIcon(feature)});
 		},
 		onEachFeature:function(feature, layer){
+      popupContent = "<h3><center>"+feature.properties["שם העסק"]+"</center></h3>"
 			layer.bindPopup("<span><center><b>"+feature.properties["שם העסק"]+"</b></center></span></br>"+
       "<span>"+feature.properties["סוג העסק"]+"</span><br>"+
       (feature.properties["מחזור"] ? `<i style="font-size:24px; color:green;" class="fa fa-recycle"></i>` : "") + 
