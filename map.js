@@ -110,13 +110,12 @@ $.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גי
 			return L.marker(latlng,{icon: getIcon(feature)});
 		},
 		onEachFeature:function(feature, layer){
-      popupContent = "<h3><center>"+feature.properties["שם העסק"]+"</center></h3>"
-			layer.bindPopup("<span><center><b>"+feature.properties["שם העסק"]+"</b></center></span></br>"+
-      "<span>"+feature.properties["סוג העסק"]+"</span><br>"+
-      (feature.properties["מחזור"] ? `<i style="font-size:24px; color:green;" class="fa fa-recycle"></i>` : "") + 
-      (feature.properties["קופסאות רב פעמיות"] ? `<i style="font-size:24px; color:green;" class="fa fa-leaf"></i>`: "")
-      
-			);
+      popupContent = "<h3><center>"+feature.properties["שם העסק"]+"</center></h3>";
+      popupContent += feature.properties["סוג העסק"] ? feature.properties["סוג העסק"]+"<br>" : '';
+      popupContent += feature.properties["כתובת"] ? feature.properties["כתובת"]+"<br>" : '';
+      popupContent += (feature.properties["מחזור"] ? `<i style="font-size:24px; color:green;" class="fa fa-recycle"></i>` : "");
+      popupContent += (feature.properties["מוצרים בלי אריזה"] ? `<i title="מוצרים ללא אריזה" style="font-size:24px; color:green;" class="fa fa-balance-scale"></i>`: "");
+			layer.bindPopup(popupContent);
 		},
 		style: function style(feature){
 			return {
