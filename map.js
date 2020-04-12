@@ -119,8 +119,11 @@ $.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גי
       popupContent = "<h3><center>"+feature.properties["שם העסק"]+"</center></h3>";
       popupContent += feature.properties["סוג העסק"] ? feature.properties["סוג העסק"]+"<br>" : '';
       popupContent += feature.properties["כתובת"] ? feature.properties["כתובת"]+"<br>" : '';
-      popupContent += (feature.properties["מחזור"] ? `<i style="font-size:24px; color:green;" class="fa fa-recycle"></i>` : "");
-      popupContent += (feature.properties["מוצרים בלי אריזה"] ? `<i title="מוצרים ללא אריזה" style="font-size:24px; color:green;" class="fa fa-balance-scale"></i>`: "");
+      popupContent += (feature.properties["מוצרים אקולוגיים"] ? `<i title="מוצרים אקולוגיים" style="font-size:24px; color:#4CB69F;" class="fa fa-leaf"></i>`: "");
+      popupContent += (feature.properties["קופסאות רב פעמיות"] ? `<i title="אריזות רב פעמיות" style="font-size:24px; color:#FFD166;" class="fa fa-box-open"></i>`: "");
+      popupContent += (feature.properties["מוצרים בלי אריזה"] ? `<i title="מוצרים ללא אריזה" style="font-size:24px; color:#118AB2;" class="fa fa-balance-scale"></i>`: "");
+      popupContent += (feature.properties["מחזור"] ? `<i title="מחזור" style="font-size:24px; color:#6A4C93;" class="fa fa-recycle"></i>`: "");
+      popupContent += (feature.properties["reuse"] ? `<i title="שימוש חוזר" style="font-size:24px; color:#EF476F;" class="fa fa-sync"></i>`: "");
 			layer.bindPopup(popupContent);
 		},
 		style: function style(feature){
