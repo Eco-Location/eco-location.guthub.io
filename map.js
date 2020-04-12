@@ -14,9 +14,14 @@ let Stamen_Watercolor = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/w
 	maxZoom: 17,
 	ext: 'jpg'
 });
+var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 19
+});
 eval(atob("QVBJX0tFWT0nQUl6YVN5Q3NCajRfTjBpSUt3YWFaSWpXTHZPSjlZRXNlaVV6M3BBJw=="))
 let map = L.map('map', {
-    layers: Stamen_Watercolor,
+    layers: CartoDB_Voyager,
     center: [ 31.895827, 34.811196],
     zoom: 12
     });
@@ -28,13 +33,14 @@ var CartoDB_PositronOnlyLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/
   subdomains: 'abcd',
     maxZoom: 17,
     pane: "labels"
-}).addTo(map)
+})//.addTo(map)
 
 let current_language = "he"
 let basemaps = {
 'OpenStreetMap Mapnik Style':OpenStreetMap_Mapnik,
 'Hydda Full': Hydda_Full,
-'Stamen Watercolor': Stamen_Watercolor
+'Stamen Watercolor': Stamen_Watercolor,
+'CartoDB Voyager':CartoDB_Voyager
 };
 
 const numberWithCommas = (x) => {
