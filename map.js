@@ -73,7 +73,7 @@ fillOpacity: 0.5
 };
 
 sheet_ID = "1ufxJQPU2EAWIE0k2KPAh18hheJiQ3qaUHNurekXEAyo"
-$.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גיליון1!A1:G?key=${API_KEY}&alt=json`,function(data){
+$.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גיליון 1!A1:J?key=${API_KEY}&alt=json`,function(data){
     points_data = data.values
     propertyNames = points_data[0]
     geojson = {
@@ -130,4 +130,52 @@ $.getJSON(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_ID}/values/גי
 
 	L.control.layers(basemaps).addTo(map);
 	
+})
+
+
+var addOnClick = false;
+L.Control.AddBusiness = L.Control.extend({
+  onAdd: function(map) {
+    var container = L.DomUtil.create('div', 'leaflet-bar');
+
+    container.id = "addButton"
+    container.style.cursor = 'pointer';
+    container.innerHTML = "<center>הוספת עסק</center>";
+    container.style.backgroundColor = 'white'; 
+    container.style.borderRadius = '3px'; 
+    container.style.padding = "5px";
+    container.style.color = "black";
+    container.style.width = '10vw';
+    container.value = "on";
+    
+    L.DomEvent.disableClickPropagation(container);
+    container.onclick = function(){    
+        if(addOnClick){
+          
+        }else{
+          document.getElementById("map").style.cursor='pointer';
+          document.getElementById("addButton").style.backgroundColor = "green";
+          addOnClick = true;
+        }
+    }
+    return container;
+}
+});
+L.control.addBusiness = function(opts) {
+  return new L.Control.AddBusiness(opts);
+};
+L.control.addBusiness({ position: 'topright' }).addTo(map);
+map.on('click',function(e){
+  if(addOnClick){
+    var lat = e.latlng.lat.toFixed(6);
+    var lng = e.latlng.lng.toFixed(6);
+    var url = `https://docs.google.com/forms/d/e/1FAIpQLSd3a0uRbB-hrOTWjGOz2lEGCiX_dMf3FPwNkD5XOkl0Kq6olA/viewform?usp=pp_url&entry.361045256=${lat}&entry.1519917982=${lng}`;
+    var popup = L.popup()
+    .setLatLng(e.latlng)
+    .setContent(`<a target="_blank" rel="noopener noreferrer" href=${url}>לחץ להוספת עסק</a><br>נפתח בעמוד חדש`)
+    .openOn(map);
+    addOnClick = false;
+    document.getElementById("addButton").style.backgroundColor = "white";
+    document.getElementById("map").style.cursor='default';
+  }
 })
